@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Tuning - Auto Pitch Correction</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <i class="fas fa-music header-icon"></i>
+                <h1 class="header-title">AI Voice Tuning</h1>
+                <p class="header-subtitle">Automatic Pitch Correction Powered by AI</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Mode Selector -->
+            <section class="mode-selector">
+                <h2 class="section-title">Choose Input Mode</h2>
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="upload">
+                        <i class="fas fa-upload"></i>
+                        <span>Upload Audio</span>
+                    </button>
+                    <button class="mode-tab" data-mode="record">
+                        <i class="fas fa-microphone"></i>
+                        <span>Record Audio</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section class="upload-section section-card active" id="upload-section">
+                <h3 class="card-title">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload Audio File
+                </h3>
+                <div class="upload-area">
+                    <input type="file" id="audio-file-input" accept=".wav,.mp3,audio/wav,audio/mpeg" hidden>
+                    <label for="audio-file-input" class="upload-label">
+                        <i class="fas fa-file-audio upload-icon"></i>
+                        <p class="upload-text">Click to select audio file</p>
+                        <p class="upload-hint">Supported formats: WAV, MP3 (Max 10MB)</p>
+                    </label>
+                </div>
+                
+                <!-- File Info Display -->
+                <div class="file-info" id="upload-file-info" style="display: none;">
+                    <div class="file-info-header">
+                        <i class="fas fa-check-circle success-icon"></i>
+                        <h4>File Selected</h4>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-detail-item">
+                            <span class="detail-label">
+                                <i class="fas fa-file"></i> Filename:
+                            </span>
+                            <span class="detail-value" id="upload-filename">-</span>
+                        </div>
+                        <div class="file-detail-item has-tooltip">
+                            <span class="detail-label">
+                                <i class="fas fa-clock"></i> Duration:
+                            </span>
+                            <span class="detail-value" id="upload-duration">-</span>
+                            <span class="tooltip">Total length of the audio file in seconds</span>
+                        </div>
+                        <div class="file-detail-item has-tooltip">
+                            <span class="detail-label">
+                                <i class="fas fa-hdd"></i> Size:
+                            </span>
+                            <span class="detail-value" id="upload-size">-</span>
+                            <span class="tooltip">File size in megabytes (MB) or kilobytes (KB)</span>
+                        </div>
+                        <div class="file-detail-item has-tooltip">
+                            <span class="detail-label">
+                                <i class="fas fa-music"></i> Format:
+                            </span>
+                            <span class="detail-value" id="upload-format">-</span>
+                            <span class="tooltip">Audio file format (WAV or MP3)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Record Section -->
+            <section class="record-section section-card" id="record-section" style="display: none;">
+                <h3 class="card-title">
+                    <i class="fas fa-microphone"></i>
+                    Record Audio
+                </h3>
+                <div class="record-area">
+                    <div class="record-controls">
+                        <button class="record-button" id="record-button">
+                            <i class="fas fa-circle"></i>
+                            <span>Start Recording</span>
+                        </button>
+                        <button class="stop-button" id="stop-button" style="display: none;">
+                            <i class="fas fa-stop"></i>
+                            <span>Stop Recording</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Recording Indicator -->
+                    <div class="recording-indicator" id="recording-indicator" style="display: none;">
+                        <div class="recording-pulse"></div>
+                        <span class="recording-text">Recording...</span>
+                    </div>
+                    
+                    <!-- Timer Display -->
+                    <div class="timer-display" id="timer-display" style="display: none;">
+                        <i class="fas fa-clock"></i>
+                        <span id="timer-value">00:00</span>
+                    </div>
+                </div>
+                
+                <!-- File Info Display for Recording -->
+                <div class="file-info" id="record-file-info" style="display: none;">
+                    <div class="file-info-header">
+                        <i class="fas fa-check-circle success-icon"></i>
+                        <h4>Recording Complete</h4>
+                    </div>
+                    <div class="file-details">
+                        <div class="file-detail-item has-tooltip">
+                            <span class="detail-label">
+                                <i class="fas fa-clock"></i> Duration:
+                            </span>
+                            <span class="detail-value" id="record-duration">-</span>
+                            <span class="tooltip">Total length of the recorded audio in seconds</span>
+                        </div>
+                        <div class="file-detail-item has-tooltip">
+                            <span class="detail-label">
+                                <i class="fas fa-hdd"></i> Size:
+                            </span>
+                            <span class="detail-value" id="record-size">-</span>
+                            <span class="tooltip">File size in megabytes (MB) or kilobytes (KB)</span>
+                        </div>
+                        <div class="file-detail-item has-tooltip">
+                            <span class="detail-label">
+                                <i class="fas fa-music"></i> Format:
+                            </span>
+                            <span class="detail-value" id="record-format">WAV</span>
+                            <span class="tooltip">Audio file format (WAV provides high quality)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section class="process-section section-card" id="process-section" style="display: none;">
+                <h3 class="card-title">
+                    <i class="fas fa-cogs"></i>
+                    Process Audio
+                </h3>
+                <div class="process-area">
+                    <button class="process-button" id="process-button">
+                        <i class="fas fa-magic"></i>
+                        <span>Apply Pitch Correction</span>
+                    </button>
+                    
+                    <!-- Loading Indicator -->
+                    <div class="loading-indicator" id="loading-indicator" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p class="loading-text">Processing your audio...</p>
+                        <div class="waveform-animation">
+                            <span class="wave-bar"></span>
+                            <span class="wave-bar"></span>
+                            <span class="wave-bar"></span>
+                            <span class="wave-bar"></span>
+                            <span class="wave-bar"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Result Section -->
+            <section class="result-section section-card" id="result-section" style="display: none;">
+                <h3 class="card-title">
+                    <i class="fas fa-check-circle"></i>
+                    Processing Complete
+                </h3>
+                <div class="result-area">
+                    <div class="result-message">
+                        <i class="fas fa-check success-icon-large"></i>
+                        <p>Your audio has been successfully tuned!</p>
+                    </div>
+                    
+                    <!-- Audio Player -->
+                    <div class="audio-player-container">
+                        <h4 class="player-title">
+                            <i class="fas fa-headphones"></i>
+                            Preview Tuned Audio
+                        </h4>
+                        <audio id="result-audio-player" controls class="audio-player">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                    
+                    <!-- Download Button -->
+                    <button class="download-button" id="download-button">
+                        <i class="fas fa-download"></i>
+                        <span>Download Tuned Audio</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Error/Success Messages -->
+            <div class="message-container" id="message-container"></div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">
+                    <i class="fas fa-code"></i>
+                    AI Voice Tuning - Tugas Akhir Teknik Informatika
+                </p>
+                <p class="footer-info">
+                    <i class="fas fa-info-circle"></i>
+                    Powered by Node.js, Python & Librosa
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/audioRecorder.js"></script>
+    <script src="/js/apiClient.js"></script>
+    <script src="/js/uiController.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
