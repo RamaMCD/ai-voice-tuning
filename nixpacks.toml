@@ -1,0 +1,16 @@
+[phases.setup]
+nixPkgs = ['nodejs_18', 'python39', 'ffmpeg']
+
+[phases.install]
+cmds = [
+    'npm ci --only=production',
+    'pip install -r ai_engine/requirements.txt'
+]
+
+[phases.build]
+cmds = [
+    'mkdir -p uploads outputs logs'
+]
+
+[start]
+cmd = 'npm start'

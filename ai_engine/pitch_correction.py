@@ -14,6 +14,9 @@ from pathlib import Path
 # Set ffmpeg path for pydub if available
 if os.getenv('FFMPEG_PATH'):
     os.environ['PATH'] = os.path.dirname(os.getenv('FFMPEG_PATH')) + os.pathsep + os.environ.get('PATH', '')
+else:
+    # Railway/Nixpacks should have ffmpeg in PATH by default
+    pass
 
 # Setup logging
 logging.basicConfig(
