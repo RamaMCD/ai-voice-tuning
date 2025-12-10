@@ -152,6 +152,14 @@ Railway akan otomatis set beberapa variables, tapi Anda bisa override:
 - Check logs in Railway dashboard
 - Ensure all dependencies in `package.json`
 - Verify Python requirements in `ai_engine/requirements.txt`
+- Try using Dockerfile instead of Nixpacks (Railway will auto-detect)
+
+#### ❌ NPM Install Failed
+**Symptoms**: `npm ci` or `npm install` errors
+**Solutions**:
+- Railway now uses `npm install --omit=dev` in nixpacks.toml
+- Dockerfile alternative available for more control
+- Check if package-lock.json is compatible
 
 #### ❌ Python Dependencies Failed
 **Symptoms**: `pip install` errors
